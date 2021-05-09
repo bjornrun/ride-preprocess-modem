@@ -2,9 +2,6 @@ import sys
 from pathlib import Path
 import natsort
 import re
-import json
-import datetime
-import math
 import csv
 
 
@@ -124,7 +121,8 @@ def _preprocess_modem_data(src_path: str, dst_path: str) -> int:
 
 
 if __name__ == '__main__':
-    print("Num modem data: ", _preprocess_modem_data("/mnt/smb/modem", "/mnt/modem.csv"))
-else:
-    print("Src:", sys.argv[1], " Dst:", sys.argv[2], " Num modem data:",
-          _preprocess_modem_data(sys.argv[1], sys.argv[2]))
+    if sys.argv == 1:
+        print("Num modem data: ", _preprocess_modem_data("/mnt/smb/modem", "/mnt/modem.csv"))
+    else:
+        print("Src:", sys.argv[1], " Dst:", sys.argv[2], " Num modem data:",
+              _preprocess_modem_data(sys.argv[1], sys.argv[2]))
