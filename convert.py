@@ -26,7 +26,18 @@ def _preprocess_modem_data(src_path: str, dst_path: str) -> int:
     with open(dst_path, 'w', newline='') as file_out:
         csv_out = csv.writer(file_out)
         csv_out.writerow(["year", "month", "day", "hour", "minute", "second", "COPS", "CESQ", "CSQ", "CEREG", "C5REG",
-                          "GTRAT", "GTECELLLOCK", "GTSRVSTATUS", "GTCCINFOE", "GTCCINFO service", "GTCCINFO neighbor",
+                          "GTRAT", "GTECELLLOCK", "GTSRVSTATUS", "GTCCINFOE", "GTCCINFO service cell", "IsServiceCell",
+                          "rat", "mcc", "mnc", "tac", "cellid", "earfcn", "physicalcellId", "band", "bandwidth",
+                          "rssnr_value",
+                          "rxlev", "rsrp", "rsrq",
+                          "IsServiceCell1", "rat1", "mcc1", "mnc1", "tac1", "cellid1", "earfcn1", "physicalcellId1",
+                          "bandwidth1", "rxlev1", "rsrp1", "rsrq1",
+                          "IsServiceCell2", "rat2", "mcc2", "mnc2", "tac2", "cellid2", "earfcn2", "physicalcellId2",
+                          "bandwidth2", "rxlev2", "rsrp2", "rsrq2",
+                          "IsServiceCell3", "rat3", "mcc3", "mnc3", "tac3", "cellid3", "earfcn3", "physicalcellId3",
+                          "bandwidth3", "rxlev3", "rsrp3", "rsrq3",
+                          "IsServiceCell4", "rat4", "mcc4", "mnc4", "tac4", "cellid4", "earfcn4", "physicalcellId4",
+                          "bandwidth4", "rxlev4", "rsrp4", "rsrq4",
                           "PCC", "SCC1", "SCC2", "datetime"])
 
         row = 0
@@ -94,18 +105,30 @@ def _preprocess_modem_data(src_path: str, dst_path: str) -> int:
                             GTCCINFOE = ""
                         try:
                             i = [i for i, s in enumerate(lines) if '+GTCCINFO: ' in s][0]
-                            GTCCINFO_service = lines[i+1] + ' ' + lines[i+2]
-                            neighbors = ""
+                            GTCCINFO_service_cell = lines[i+1]
+                            [IsServiceCell,rat,mcc,mnc,tac,cellid,earfcn,physicalcellId,band,bandwidth,rssnr_value,rxlev,rsrp,rsrq] = lines[i+2].split(',')
                             j = i + 4
-                            while j < len(lines):
-                                if ':' in lines[j]:
-                                    break
-                                neighbors += lines[j] + " "
-                                j += 1
-                            GTCCINFO_neighbors = lines[i+3] + ' ' + neighbors
+                            [IsServiceCell_0,rat_0,mcc_0,mnc_0,tac_0,cellid_0,earfcn_0,physicalcellId_0,bandwidth_0,rxlev_0,rsrp_0,rsrq_0] = ",,,,,,,,,,,".split(',')
+                            [IsServiceCell_1,rat_1,mcc_1,mnc_1,tac_1,cellid_1,earfcn_1,physicalcellId_1,bandwidth_1,rxlev_1,rsrp_1,rsrq_1] = ",,,,,,,,,,,".split(',')
+                            [IsServiceCell_2,rat_2,mcc_2,mnc_2,tac_2,cellid_2,earfcn_2,physicalcellId_2,bandwidth_2,rxlev_2,rsrp_2,rsrq_2] = ",,,,,,,,,,,".split(',')
+                            [IsServiceCell_3,rat_3,mcc_3,mnc_3,tac_3,cellid_3,earfcn_3,physicalcellId_3,bandwidth_3,rxlev_3,rsrp_3,rsrq_3] = ",,,,,,,,,,,".split(',')
+
+                            if j < len(lines):
+                                [IsServiceCell_0,rat_0,mcc_0,mnc_0,tac_0,cellid_0,earfcn_0,physicalcellId_0,bandwidth_0,rxlev_0,rsrp_0,rsrq_0] = lines[j].split(',')
+                            if j + 1 < len(lines):
+                                [IsServiceCell_1,rat_1,mcc_1,mnc_1,tac_1,cellid_1,earfcn_1,physicalcellId_1,bandwidth_1,rxlev_1,rsrp_1,rsrq_1] = lines[j + 1].split(',')
+                            if j + 2 < len(lines):
+                                [IsServiceCell_2,rat_2,mcc_2,mnc_2,tac_2,cellid_2,earfcn_2,physicalcellId_2,bandwidth_2,rxlev_2,rsrp_2,rsrq_2] = lines[j + 2].split(',')
+                            if j + 3 < len(lines):
+                                [IsServiceCell_3,rat_3,mcc_3,mnc_3,tac_3,cellid_3,earfcn_3,physicalcellId_3,bandwidth_3,rxlev_3,rsrp_3,rsrq_3] = lines[j + 3].split(',')
+
                         except Exception:
-                            GTCCINFO_service = ""
-                            GTCCINFO_neighbors = ""
+                            GTCCINFO_service_cell = ""
+                            [IsServiceCell,rat,mcc,mnc,tac,cellid,earfcn,physicalcellId,band,bandwidth,rssnr_value,rxlev,rsrp,rsrq] = ",,,,,,,,,,,,,".split(',')
+                            [IsServiceCell_0,rat_0,mcc_0,mnc_0,tac_0,cellid_0,earfcn_0,physicalcellId_0,bandwidth_0,rxlev_0,rsrp_0,rsrq_0] = ",,,,,,,,,,,".split(',')
+                            [IsServiceCell_1,rat_1,mcc_1,mnc_1,tac_1,cellid_1,earfcn_1,physicalcellId_1,bandwidth_1,rxlev_1,rsrp_1,rsrq_1] = ",,,,,,,,,,,".split(',')
+                            [IsServiceCell_2,rat_2,mcc_2,mnc_2,tac_2,cellid_2,earfcn_2,physicalcellId_2,bandwidth_2,rxlev_2,rsrp_2,rsrq_2] = ",,,,,,,,,,,".split(',')
+                            [IsServiceCell_3,rat_3,mcc_3,mnc_3,tac_3,cellid_3,earfcn_3,physicalcellId_3,bandwidth_3,rxlev_3,rsrp_3,rsrq_3] = ",,,,,,,,,,,".split(',')
                         try:
                             i = [i for i, s in enumerate(lines) if 'PCC: ' in s][0]
                             PCC = lines[i].split('PCC: ')[1]
@@ -122,8 +145,14 @@ def _preprocess_modem_data(src_path: str, dst_path: str) -> int:
                         except Exception:
                             SCC2 = ""
                         csv_out.writerow(
-                            [year, month, day, hour, minutes, seconds, COPS, CESQ, CSQ, CEREG, C5GREG, GTRAT, GTCELLLOCK,
-                             GTSRVSTATUS, GTCCINFOE, GTCCINFO_service, GTCCINFO_neighbors, PCC, SCC1, SCC2,
+                            [year, month, day, hour, minutes, seconds, COPS, CESQ, CSQ, CEREG, C5GREG, GTRAT,
+                             GTCELLLOCK, GTSRVSTATUS, GTCCINFOE, GTCCINFO_service_cell, IsServiceCell, rat, mcc, mnc,
+                             tac, cellid, earfcn, physicalcellId,band,bandwidth,rssnr_value,rxlev,rsrp,rsrq,
+                             IsServiceCell_0,rat_0,mcc_0,mnc_0,tac_0,cellid_0,earfcn_0,physicalcellId_0,bandwidth_0,rxlev_0,rsrp_0,rsrq_0,
+                             IsServiceCell_1,rat_1,mcc_1,mnc_1,tac_1,cellid_1,earfcn_1,physicalcellId_1,bandwidth_1,rxlev_1,rsrp_1,rsrq_1,
+                             IsServiceCell_2,rat_2,mcc_2,mnc_2,tac_2,cellid_2,earfcn_2,physicalcellId_2,bandwidth_2,rxlev_2,rsrp_2,rsrq_2,
+                             IsServiceCell_3,rat_3,mcc_3,mnc_3,tac_3,cellid_3,earfcn_3,physicalcellId_3,bandwidth_3,rxlev_3,rsrp_3,rsrq_3,
+                             PCC, SCC1, SCC2,
                              datetime.datetime(int(year), int(month), int(day), int(hour), int(minutes), int(seconds))
                              ])
 
