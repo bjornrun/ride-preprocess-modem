@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 from pathlib import Path
@@ -25,7 +26,8 @@ def _preprocess_modem_data(src_path: str, dst_path: str) -> int:
     with open(dst_path, 'w', newline='') as file_out:
         csv_out = csv.writer(file_out)
         csv_out.writerow(["year", "month", "day", "hour", "minute", "second", "COPS", "CESQ", "CSQ", "CEREG", "C5REG",
-                          "GTRAT", "GTECELLLOCK", "GTSRVSTATUS", "GTCCINFOE", "GTCCINFO service", "GTCCINFO neighbor", "PCC", "SCC1", "SCC2"])
+                          "GTRAT", "GTECELLLOCK", "GTSRVSTATUS", "GTCCINFOE", "GTCCINFO service", "GTCCINFO neighbor",
+                          "PCC", "SCC1", "SCC2", "datetime"])
 
         row = 0
 
@@ -121,7 +123,9 @@ def _preprocess_modem_data(src_path: str, dst_path: str) -> int:
                             SCC2 = ""
                         csv_out.writerow(
                             [year, month, day, hour, minutes, seconds, COPS, CESQ, CSQ, CEREG, C5GREG, GTRAT, GTCELLLOCK,
-                             GTSRVSTATUS, GTCCINFOE, GTCCINFO_service, GTCCINFO_neighbors, PCC, SCC1, SCC2])
+                             GTSRVSTATUS, GTCCINFOE, GTCCINFO_service, GTCCINFO_neighbors, PCC, SCC1, SCC2,
+                             datetime.datetime(int(year), int(month), int(day), int(hour), int(minutes), int(seconds))
+                             ])
 
                         row += 1
     return row
